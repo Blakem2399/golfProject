@@ -1,7 +1,21 @@
 function addplayers() {
     let numplayers = $(".numinput").val();
+    $(".left").append('<div>holes</div>');
+    $(".left").append('<div>yards</div>');
+    $(".left").append('<div>hcp</div>');
     for (let i = 1; i <= numplayers; i++) {
-        $(".content").append('<div>player' + i + '</div>')
+        let rname = '';
+        $.ajax({
+            url: 'https://randomuser.me/api/?nat=us',
+            dataType: 'json',
+            success: function(data) {
+                console.log(data);
+                rname = data.results[0].name.first +" "+data.results[0].name.last;
+                $(".left").append('<div>'+ rname +'</div>');
+            }
+        });
+
+
 
     }
     $(".modal").fadeOut();
@@ -26,7 +40,7 @@ function loadDoc() {
         }
     };
 }
-function loadCourse() {
+function loadCourse(courseid) {
     var xhttp = new xhttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
@@ -38,10 +52,11 @@ function loadCourse() {
                 $('#teeselect').append("<option value='" + i +"'>" + teearray[i].teeType + "</option>");
 
             }
+
             document.getElementById("demo").innerHTML = xhttp.responseText;
         }
     };
-    xhttp.open("GET", "filename", true);
+    xhttp.open("GET", "https://golf-courses-api.herokuapp.com/courses/"+courseid, true);
     xhttp.send();
 }
 function addholes() {
@@ -52,7 +67,25 @@ function addholes() {
     }
 }
 function buildCard() {
-    for (let i = 1; i<= numholes; i++){
-        $(".card").append("<div id='col" + i + "' class='cardCol'>"+ i +"</div>")
+    for (let i = 0; i<= numholes; i++){
+        $(".card").append("<div id='col" + i+1 + "' class='cardCol'><span>"+ i +"</span>" +
+        "<div> mycourse.data.holes[i].teeboxes[globaltee].yards</div>" +
+
+
+           + "</div>")
     }
+}
+function chooseTee(teevalue) {
+    globalTee = teevalue;
+    buildCard();
+}
+function checkName(myval) {
+
+    $(".pname").each(function () {
+        let player = $(this).html();
+        if (myval === player) {
+            console.log('cant use that name');
+        }
+
+    });
 }
