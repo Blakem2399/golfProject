@@ -24,4 +24,9 @@ html, body {
   margin: 5px; }
 
 .content {
-  filter: blur(4px); }
+  filter: blur(4px);
+  display: flex; }
+
+.card {
+  display: flex;
+  flex-direction: row; }

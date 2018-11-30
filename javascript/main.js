@@ -1,5 +1,5 @@
 let coursecollection;
-let numplayers = 0;
+let numplayers;
 let numholes = 18;
 let theCourse = document.getElementById('courseSelect').value;
 let globalTee;
@@ -24,7 +24,7 @@ function loadDoc() {
 function addplayers() {
 
     globalTee = $('#teeselect').val();
-    let numplayers = $(".numinput").val();
+    numplayers = $(".numinput").val();
     if ((numplayers !== 0) && $('#teeselect').html !== '') {
         $(".left").append('<div>holes</div>');
         $(".left").append('<div>yards</div>');
@@ -35,9 +35,8 @@ function addplayers() {
                 url: 'https://randomuser.me/api/?nat=us',
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data);
-                    rname = data.results[0].name.first + " " + data.results[0].name.last;
-                    $(".left").append('<div>' + rname + '</div>');
+                    rname = data.results[0].name.first;
+                    $(".left").append('<div contenteditable="true" onkeyup="checkName()">' + rname + '</div>');
                 }
             });
         }
@@ -59,34 +58,33 @@ function loadCourse(courseid) {
             let teearray = mycourse.data.holes[0].teeBoxes;
             for (let i = 0; i < teearray.length; i++) {
                 $('#teeselect').append("<option value='" + i + "'>" + teearray[i].teeType + "</option>");
-
             }
-
         }
     };
     xhttp.open("GET", "https://golf-courses-api.herokuapp.com/courses/" + courseid, true);
     xhttp.send();
 }
 
+function buildCard() {
+    for (let h = 0; h <= numholes; h++) {
+        console.log(mycourse.data.holes[h].teeBoxes[globalTee]);
+         let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+         console.log(yardage);
+        $(".card").append("<div id='col" + (h + 1) + "' class='cardCol'><span>" + (h + 1) + "</span>" +
+            "<div>" + yardage + "</div></div>")
+    }
+    addholes();
+}
+
+
 function addholes() {
     for (let p = 1; p <= numplayers; p++) {
         for (let h = 1; h <= numholes; h++) {
-            $("#col" + h).append("<input type='text' id='p" + p + " h " + h + " '> ")
+            $("#col" + h).append("<input type='text' id='p" + p + " h " + h + " ' class='hole'> ")
         }
     }
 }
 
-
-
-function buildCard() {
-    for (let i = 0; i <= numholes; i++) {
-        $(".card").append("<div id='col" + i + 1 + "' class='cardCol'><span>" + i + "</span>" +
-            "<div>" + mycourse.data.holes[i].teeBoxes[globalTee].yards + "</div>" +
-            +"</div>")
-
-    }
-    addholes();
-}
 
 
 function checkName(myval) {

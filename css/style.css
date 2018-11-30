@@ -24,4 +24,22 @@ html, body {
   margin: 5px; }
 
 .content {
-  filter: blur(4px); }
+  filter: blur(4px);
+  display: flex; }
+
+.card {
+  display: flex;
+  flex-direction: row; }
+
+.left {
+  width: 200px;
+  margin: 10px; }
+
+.hole {
+  width: 50px; }
+
+.cardCol {
+  flex-direction: column;
+  text-align: center;
+  margin: 0;
+  padding: 0; }

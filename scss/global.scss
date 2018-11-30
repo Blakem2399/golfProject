@@ -26,4 +26,9 @@ html,body{
 }
 .content{
   filter: blur(4px);
+  display: flex;
+}
+.card{
+  display: flex;
+  flex-direction: row;
 }
