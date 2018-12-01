@@ -2,7 +2,8 @@ html, body {
   width: 100%;
   height: 100%;
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  background-image: url("../img/background.jpg"); }
 
 .modal {
   position: absolute;
@@ -25,15 +26,18 @@ html, body {
 
 .content {
   filter: blur(4px);
-  display: flex; }
+  display: flex;
+  margin-top: 10px; }
 
 .card {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  background-color: white; }
 
 .left {
   width: 200px;
-  margin: 10px; }
+  margin: 10px;
+  background-color: blanchedalmond; }
 
 .hole {
   width: 50px; }
@@ -43,3 +47,6 @@ html, body {
   text-align: center;
   margin: 0;
   padding: 0; }
+
+.leftWords {
+  margin-top: 2px; }

@@ -10,7 +10,7 @@ let mycourse;
 })();
 
 function loadDoc() {
-    var xhttp = new XMLHttpRequest();
+    const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             coursecollection = JSON.parse(this.responseText);
@@ -27,8 +27,8 @@ function addplayers() {
     numplayers = $(".numinput").val();
     if ((numplayers !== 0) && $('#teeselect').html !== '') {
         $(".left").append('<div>holes</div>');
-        $(".left").append('<div>yards</div>');
-        $(".left").append('<div>hcp</div>');
+        $(".left").append('<div class="leftWords">yards</div>');
+        $(".left").append('<div class="leftWords">hcp</div>');
         for (let i = 1; i <= numplayers; i++) {
             let rname = '';
             $.ajax({
@@ -36,7 +36,7 @@ function addplayers() {
                 dataType: 'json',
                 success: function (data) {
                     rname = data.results[0].name.first;
-                    $(".left").append('<div contenteditable="true" onkeyup="checkName()">' + rname + '</div>');
+                    $(".left").append('<div class="leftWords" contenteditable="true" onkeyup="checkName()">' + rname + '</div>');
                 }
             });
         }
@@ -49,7 +49,7 @@ function addplayers() {
 }
 
 function loadCourse(courseid) {
-    var xhttp = new XMLHttpRequest();
+    const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             mycourse = JSON.parse(this.responseText);
@@ -66,12 +66,11 @@ function loadCourse(courseid) {
 }
 
 function buildCard() {
-    for (let h = 0; h <= numholes; h++) {
-        console.log(mycourse.data.holes[h].teeBoxes[globalTee]);
+    for (let h = 0; h < numholes; h++) {
+         let handicap = mycourse.data.holes[h].teeBoxes[globalTee].hcp;
          let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
-         console.log(yardage);
         $(".card").append("<div id='col" + (h + 1) + "' class='cardCol'><span>" + (h + 1) + "</span>" +
-            "<div>" + yardage + "</div></div>")
+            "<div>" + yardage + "</div><div>" + handicap + "</div></div>")
     }
     addholes();
 }
