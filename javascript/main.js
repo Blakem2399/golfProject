@@ -10,16 +10,14 @@ let inTotalYards = 0;
 let inTotalPar = 0;
 let outTotalYards = 0;
 let outTotalPar = 0;
-let p1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p3 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p4 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p5 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p6 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p7 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-let p8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-
-
+let p1 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p2 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p3 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p4 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p5 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p6 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p7 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+let p8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 (function () {
     loadDoc();
 })();
@@ -37,7 +35,6 @@ function loadDoc() {
 }
 
 function addplayers() {
-
     globalTee = $('#teeselect').val();
     numplayers = $(".numinput").val();
     if ((numplayers < 9) && (numplayers !== 0) && $('#teeselect').html !== '') {
@@ -52,7 +49,10 @@ function addplayers() {
                 dataType: 'json',
                 success: function (data) {
                     rname = data.results[0].name.first;
-                    $(".left").append('<div class="leftWords" contenteditable="true" onkeyup="checkName()">' + rname + '</div>');
+                    $(".left").append('<div class="leftWords pName" id="name' + i + '" contenteditable="true" onkeyup="checkName(this)">' + rname + '</div>');
+                },
+                error: function () {
+                    location.reload();
                 }
             });
         }
@@ -61,7 +61,8 @@ function addplayers() {
         $(".modal").fadeOut();
         $(".content").css("filter", "blur(0)");
     }
-    else {}
+    else {
+    }
 }
 
 function loadCourse(courseid) {
@@ -80,8 +81,8 @@ function loadCourse(courseid) {
     xhttp.open("GET", "https://golf-courses-api.herokuapp.com/courses/" + courseid, true);
     xhttp.send();
 }
-function totaling() {
 
+function totaling() {
     for (let h = 0; h < numholes; h++) {
         let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
         let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
@@ -94,18 +95,19 @@ function totaling() {
         inTotalYards = inTotalYards + yardage;
         inTotalPar = inTotalPar + par;
     }
-    for (let h = 8; h < numholes; h++) {
+    for (let h = 9; h < numholes; h++) {
         let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
         let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
         outTotalYards = outTotalYards + yardage;
         outTotalPar = outTotalPar + par;
     }
 }
+
 function buildCard() {
     for (let h = 0; h < numholes; h++) {
-         let handicap = mycourse.data.holes[h].teeBoxes[globalTee].hcp;
-         let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
-         let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
+        let handicap = mycourse.data.holes[h].teeBoxes[globalTee].hcp;
+        let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+        let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
         $(".card").append("<div id='col" + (h + 1) + "' class='cardCol'><span>" + (h + 1) + "</span>" +
             "<div>" + yardage + "</div><div>" + handicap + "</div><div>" + par + "</div></div>")
     }
@@ -123,8 +125,7 @@ function buildCard() {
 function addholes() {
     for (let p = 1; p <= numplayers; p++) {
         for (let h = 1; h <= numholes; h++) {
-
-            $("#col" + h).append("<input type='text' id='p" + p + "h" + h + "' class='hole' onkeyup='getScores(" + p +","+ h +")'> ")
+            $("#col" + h).append("<input type='text' id='p" + p + "h" + h + "' class='hole' onkeyup='getScores(" + p + "," + h + ")'> ")
         }
         $("#inScore").append("<div id='in" + p + "' class='hole leftWords'></div>");
         $("#outScore").append("<div id='out" + p + "' class='hole leftWords'></div>");
@@ -133,10 +134,8 @@ function addholes() {
 }
 
 
-
 function checkName(myval) {
-
-    $(".pname").each(function () {
+    $(".pName").each(function () {
         let player = $(this).html();
         if (myval === player) {
             console.log('cant use that name');
@@ -145,12 +144,11 @@ function checkName(myval) {
     });
 }
 
-function getScores(player,hole) {
-
-    let thisScore = $("#p" + player +"h"+ hole).val();
+function getScores(player, hole) {
+    let thisScore = $("#p" + player + "h" + hole).val();
     let scoreNumber = Number(thisScore);
-    if (isNaN(scoreNumber)){
-        $("#p" + player +"h"+ hole).empty();
+    if (isNaN(scoreNumber)) {
+        $("#p" + player + "h" + hole).empty();
     }
     else {
         switch (player) {
@@ -183,6 +181,7 @@ function getScores(player,hole) {
         function getSum(total, num) {
             return total + num;
         }
+
 //things get very messy past this point, must find way to iterate through the arrays. DON'T HARDCODE AGAIN
         let twat = p1.reduce(getSum);
         document.getElementById("total1").innerHTML = p1.reduce(getSum);
@@ -193,22 +192,22 @@ function getScores(player,hole) {
         document.getElementById("total6").innerHTML = p6.reduce(getSum);
         document.getElementById("total7").innerHTML = p7.reduce(getSum);
         document.getElementById("total8").innerHTML = p8.reduce(getSum);
-        let in1 = p1.slice(0,10);
-        let in2 = p2.slice(0,10);
-        let in3 = p3.slice(0,10);
-        let in4 = p4.slice(0,10);
-        let in5 = p5.slice(0,10);
-        let in6 = p6.slice(0,10);
-        let in7 = p7.slice(0,10);
-        let in8 = p8.slice(0,10);
-        let out1 = p1.slice(9,18);
-        let out2 = p2.slice(9,18);
-        let out3 = p3.slice(9,18);
-        let out4 = p4.slice(9,18);
-        let out5 = p5.slice(9,18);
-        let out6 = p6.slice(9,18);
-        let out7 = p7.slice(9,18);
-        let out8 = p8.slice(9,18);
+        let in1 = p1.slice(0, 9);
+        let in2 = p2.slice(0, 9);
+        let in3 = p3.slice(0, 9);
+        let in4 = p4.slice(0, 9);
+        let in5 = p5.slice(0, 9);
+        let in6 = p6.slice(0, 9);
+        let in7 = p7.slice(0, 9);
+        let in8 = p8.slice(0, 9);
+        let out1 = p1.slice(9, 18);
+        let out2 = p2.slice(9, 18);
+        let out3 = p3.slice(9, 18);
+        let out4 = p4.slice(9, 18);
+        let out5 = p5.slice(9, 18);
+        let out6 = p6.slice(9, 18);
+        let out7 = p7.slice(9, 18);
+        let out8 = p8.slice(9, 18);
         document.getElementById("in1").innerHTML = in1.reduce(getSum);
         document.getElementById("in2").innerHTML = in2.reduce(getSum);
         document.getElementById("in3").innerHTML = in3.reduce(getSum);
@@ -225,11 +224,5 @@ function getScores(player,hole) {
         document.getElementById("out6").innerHTML = out6.reduce(getSum);
         document.getElementById("out7").innerHTML = out7.reduce(getSum);
         document.getElementById("out8").innerHTML = out8.reduce(getSum);
-
-
-
-
-
-
     }
 }
