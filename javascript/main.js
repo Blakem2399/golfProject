@@ -4,6 +4,21 @@ let numholes = 18;
 let theCourse = document.getElementById('courseSelect').value;
 let globalTee;
 let mycourse;
+let totalYards = 0;
+let totalPar = 0;
+let inTotalYards = 0;
+let inTotalPar = 0;
+let outTotalYards = 0;
+let outTotalPar = 0;
+let p1 = [];
+let p2 = [];
+let p3 = [];
+let p4 = [];
+let p5 = [];
+let p6 = [];
+let p7 = [];
+let p8 = [];
+
 
 (function () {
     loadDoc();
@@ -25,10 +40,11 @@ function addplayers() {
 
     globalTee = $('#teeselect').val();
     numplayers = $(".numinput").val();
-    if ((numplayers !== 0) && $('#teeselect').html !== '') {
+    if ((numplayers < 9) && (numplayers !== 0) && $('#teeselect').html !== '') {
         $(".left").append('<div>holes</div>');
-        $(".left").append('<div class="leftWords">yards</div>');
-        $(".left").append('<div class="leftWords">hcp</div>');
+        $(".left").append('<div>yards</div>');
+        $(".left").append('<div>hcp</div>');
+        $(".left").append('<div class="leftWords">par</div>');
         for (let i = 1; i <= numplayers; i++) {
             let rname = '';
             $.ajax({
@@ -64,14 +80,42 @@ function loadCourse(courseid) {
     xhttp.open("GET", "https://golf-courses-api.herokuapp.com/courses/" + courseid, true);
     xhttp.send();
 }
+function totaling() {
 
+    for (let h = 0; h < numholes; h++) {
+        let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+        let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
+        totalYards = totalYards + yardage;
+        totalPar = totalPar + par;
+    }
+    for (let h = 0; h < 9; h++) {
+        let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+        let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
+        inTotalYards = inTotalYards + yardage;
+        inTotalPar = inTotalPar + par;
+    }
+    for (let h = 8; h < numholes; h++) {
+        let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+        let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
+        outTotalYards = outTotalYards + yardage;
+        outTotalPar = outTotalPar + par;
+    }
+}
 function buildCard() {
     for (let h = 0; h < numholes; h++) {
          let handicap = mycourse.data.holes[h].teeBoxes[globalTee].hcp;
          let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
+         let par = mycourse.data.holes[h].teeBoxes[globalTee].par;
         $(".card").append("<div id='col" + (h + 1) + "' class='cardCol'><span>" + (h + 1) + "</span>" +
-            "<div>" + yardage + "</div><div>" + handicap + "</div></div>")
+            "<div>" + yardage + "</div><div>" + handicap + "</div><div>" + par + "</div></div>")
     }
+    totaling();
+    $(".card").append("<div id='inScore' class='cardCol end'><span>In</span>" +
+        "<div>" + inTotalYards + "</div><div>H</div><div>" + inTotalPar + "</div></div>");
+    $(".card").append("<div id='outScore' class='cardCol end'><span>Out</span>" +
+        "<div>" + outTotalYards + "</div><div>H</div><div>" + outTotalPar + "</div></div>");
+    $(".card").append("<div id='totalScore' class='cardCol end'><span>Total</span>" +
+        "<div>" + totalYards + "</div><div>H</div><div>" + totalPar + "</div></div>");
     addholes();
 }
 
@@ -79,8 +123,10 @@ function buildCard() {
 function addholes() {
     for (let p = 1; p <= numplayers; p++) {
         for (let h = 1; h <= numholes; h++) {
-            $("#col" + h).append("<input type='text' id='p" + p + " h " + h + " ' class='hole'> ")
+
+            $("#col" + h).append("<input type='text' id='p" + p + "h" + h + "' class='hole' onkeyup='getScores(" + p +","+ h +")'> ")
         }
+
     }
 }
 
@@ -95,4 +141,8 @@ function checkName(myval) {
         }
 
     });
+}
+
+function getScores(player,hole) {
+
 }
