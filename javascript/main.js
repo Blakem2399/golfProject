@@ -21,7 +21,7 @@ let p8 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 (function () {
     loadDoc();
 })();
-
+//this loads the information from the Api
 function loadDoc() {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -33,7 +33,7 @@ function loadDoc() {
         }
     };
 }
-
+//this adds randomized player names and causes the card to be built
 function addplayers() {
     globalTee = $('#teeselect').val();
     numplayers = $(".numinput").val();
@@ -64,7 +64,7 @@ function addplayers() {
     else {
     }
 }
-
+//selects the course to be used for the tee boxes
 function loadCourse(courseid) {
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
@@ -81,7 +81,7 @@ function loadCourse(courseid) {
     xhttp.open("GET", "https://golf-courses-api.herokuapp.com/courses/" + courseid, true);
     xhttp.send();
 }
-
+// totals up the yards and par
 function totaling() {
     for (let h = 0; h < numholes; h++) {
         let yardage = mycourse.data.holes[h].teeBoxes[globalTee].yards;
@@ -102,7 +102,7 @@ function totaling() {
         outTotalPar = outTotalPar + par;
     }
 }
-
+//builds out the columns
 function buildCard() {
     for (let h = 0; h < numholes; h++) {
         let handicap = mycourse.data.holes[h].teeBoxes[globalTee].hcp;
@@ -121,7 +121,7 @@ function buildCard() {
     addholes();
 }
 
-
+//adds the rows
 function addholes() {
     for (let p = 1; p <= numplayers; p++) {
         for (let h = 1; h <= numholes; h++) {
@@ -133,7 +133,7 @@ function addholes() {
     }
 }
 
-
+//checks name to see if same
 function checkName(myval) {
     $(".pName").each(function () {
         let player = $(this).html();
@@ -143,7 +143,7 @@ function checkName(myval) {
 
     });
 }
-
+//retrieves scores from card and loads to array
 function getScores(player, hole) {
     let thisScore = $("#p" + player + "h" + hole).val();
     let scoreNumber = Number(thisScore);
