@@ -10,14 +10,14 @@ let inTotalYards = 0;
 let inTotalPar = 0;
 let outTotalYards = 0;
 let outTotalPar = 0;
-let p1 = [];
-let p2 = [];
-let p3 = [];
-let p4 = [];
-let p5 = [];
-let p6 = [];
-let p7 = [];
-let p8 = [];
+let p1 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p2 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p3 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p4 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p5 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p6 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p7 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+let p8 = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 
 (function () {
@@ -126,9 +126,9 @@ function addholes() {
 
             $("#col" + h).append("<input type='text' id='p" + p + "h" + h + "' class='hole' onkeyup='getScores(" + p +","+ h +")'> ")
         }
-        $("#inScore").append("<span id='in" + p + "'></span>");
-        $("#outScore").append("<span id='out" + p + "'></span>");
-        $("#totalScore").append("<span id='total" + p + "'></span>");
+        $("#inScore").append("<div id='in" + p + "' class='hole leftWords'></div>");
+        $("#outScore").append("<div id='out" + p + "' class='hole leftWords'></div>");
+        $("#totalScore").append("<div id='total" + p + "' class='hole leftWords'></div>");
     }
 }
 
@@ -148,34 +148,88 @@ function checkName(myval) {
 function getScores(player,hole) {
 
     let thisScore = $("#p" + player +"h"+ hole).val();
-    switch (player) {
-        case 1:
-            p1[hole - 1] = Number(thisScore);
-            break;
-        case 2:
-            p2[hole - 1] = Number(thisScore);
-            break;
-        case 3:
-            p3[hole - 1] = Number(thisScore);
-            break;
-        case 4:
-            p4[hole - 1] = Number(thisScore);
-            break;
-        case 5:
-            p5[hole - 1] = Number(thisScore);
-            break;
-        case 6:
-            p6[hole - 1] = Number(thisScore);
-            break;
-        case 7:
-            p7[hole - 1] = Number(thisScore);
-            break;
-        case 8:
-            p8[hole - 1] = Number(thisScore);
-            break;
+    let scoreNumber = Number(thisScore);
+    if (isNaN(scoreNumber)){
+        $("#p" + player +"h"+ hole).empty();
     }
+    else {
+        switch (player) {
+            case 1:
+                p1[hole - 1] = scoreNumber;
+                break;
+            case 2:
+                p2[hole - 1] = scoreNumber;
+                break;
+            case 3:
+                p3[hole - 1] = scoreNumber;
+                break;
+            case 4:
+                p4[hole - 1] = scoreNumber;
+                break;
+            case 5:
+                p5[hole - 1] = scoreNumber;
+                break;
+            case 6:
+                p6[hole - 1] = scoreNumber;
+                break;
+            case 7:
+                p7[hole - 1] = scoreNumber;
+                break;
+            case 8:
+                p8[hole - 1] = scoreNumber;
+                break;
+        }
+
+        function getSum(total, num) {
+            return total + num;
+        }
+//things get very messy past this point, must find way to iterate through the arrays. DON'T HARDCODE AGAIN
+        let twat = p1.reduce(getSum);
+        document.getElementById("total1").innerHTML = p1.reduce(getSum);
+        document.getElementById("total2").innerHTML = p2.reduce(getSum);
+        document.getElementById("total3").innerHTML = p3.reduce(getSum);
+        document.getElementById("total4").innerHTML = p4.reduce(getSum);
+        document.getElementById("total5").innerHTML = p5.reduce(getSum);
+        document.getElementById("total6").innerHTML = p6.reduce(getSum);
+        document.getElementById("total7").innerHTML = p7.reduce(getSum);
+        document.getElementById("total8").innerHTML = p8.reduce(getSum);
+        let in1 = p1.slice(0,10);
+        let in2 = p2.slice(0,10);
+        let in3 = p3.slice(0,10);
+        let in4 = p4.slice(0,10);
+        let in5 = p5.slice(0,10);
+        let in6 = p6.slice(0,10);
+        let in7 = p7.slice(0,10);
+        let in8 = p8.slice(0,10);
+        let out1 = p1.slice(9,18);
+        let out2 = p2.slice(9,18);
+        let out3 = p3.slice(9,18);
+        let out4 = p4.slice(9,18);
+        let out5 = p5.slice(9,18);
+        let out6 = p6.slice(9,18);
+        let out7 = p7.slice(9,18);
+        let out8 = p8.slice(9,18);
+        document.getElementById("in1").innerHTML = in1.reduce(getSum);
+        document.getElementById("in2").innerHTML = in2.reduce(getSum);
+        document.getElementById("in3").innerHTML = in3.reduce(getSum);
+        document.getElementById("in4").innerHTML = in4.reduce(getSum);
+        document.getElementById("in5").innerHTML = in5.reduce(getSum);
+        document.getElementById("in6").innerHTML = in6.reduce(getSum);
+        document.getElementById("in7").innerHTML = in7.reduce(getSum);
+        document.getElementById("in8").innerHTML = in8.reduce(getSum);
+        document.getElementById("out1").innerHTML = out1.reduce(getSum);
+        document.getElementById("out2").innerHTML = out2.reduce(getSum);
+        document.getElementById("out3").innerHTML = out3.reduce(getSum);
+        document.getElementById("out4").innerHTML = out4.reduce(getSum);
+        document.getElementById("out5").innerHTML = out5.reduce(getSum);
+        document.getElementById("out6").innerHTML = out6.reduce(getSum);
+        document.getElementById("out7").innerHTML = out7.reduce(getSum);
+        document.getElementById("out8").innerHTML = out8.reduce(getSum);
 
 
 
 
+
+
+    }
 }
