@@ -126,7 +126,9 @@ function addholes() {
 
             $("#col" + h).append("<input type='text' id='p" + p + "h" + h + "' class='hole' onkeyup='getScores(" + p +","+ h +")'> ")
         }
-
+        $("#inScore").append("<span id='in" + p + "'></span>");
+        $("#outScore").append("<span id='out" + p + "'></span>");
+        $("#totalScore").append("<span id='total" + p + "'></span>");
     }
 }
 
@@ -144,5 +146,36 @@ function checkName(myval) {
 }
 
 function getScores(player,hole) {
+
+    let thisScore = $("#p" + player +"h"+ hole).val();
+    switch (player) {
+        case 1:
+            p1[hole - 1] = Number(thisScore);
+            break;
+        case 2:
+            p2[hole - 1] = Number(thisScore);
+            break;
+        case 3:
+            p3[hole - 1] = Number(thisScore);
+            break;
+        case 4:
+            p4[hole - 1] = Number(thisScore);
+            break;
+        case 5:
+            p5[hole - 1] = Number(thisScore);
+            break;
+        case 6:
+            p6[hole - 1] = Number(thisScore);
+            break;
+        case 7:
+            p7[hole - 1] = Number(thisScore);
+            break;
+        case 8:
+            p8[hole - 1] = Number(thisScore);
+            break;
+    }
+
+
+
 
 }
